@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: key-value-store-api-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: key-value-store-api-server
+      component: key-value-store-api-server
+  template:
+    metadata:
+      labels:
+        app: key-value-store-api-server
+        component: key-value-store-api-server
+    spec:
+      containers:
+      - name: key-value-store-server
+        image: abhilakshsinghreen/key-value-store-api-server:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+        env:
+        - name: REDIS_HOST
+          value: "localhost"
+        - name: REDIS_PORT
+          value: "6379"
+        - name: REDIS_DB
+          value: "0"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: key-value-store-api-server-service
+spec:
+  selector:
+    app: key-value-store-api-server
+    component: key-value-store-api-server
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
