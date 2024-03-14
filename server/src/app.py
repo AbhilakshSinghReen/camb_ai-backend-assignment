@@ -51,8 +51,7 @@ async def add_key_value_pair_api(data: AddKeyValuePairRequest):
     return JSONResponse(status_code=200, content={
         'success': True,
         'result': {
-            'key': data.key,
-            'value': data.value,
+            'message': "Addition scheduled.",
         },
     })
 
@@ -72,8 +71,7 @@ async def set_key_value_pair_api(key: str, data: UpdateKeyValuePairRequest):
     return JSONResponse(status_code=200, content={
         'success': True,
         'result': {
-            'key': key,
-            'value': data.value,
+            'message': "Updation scheduled.",
         },
     })
 
@@ -90,4 +88,9 @@ async def delete_key_value_pair_api(key: str):
     
     delete_key_value_pair(key)
 
-    return Response(status_code=204)
+    return JSONResponse(status_code=200, content={
+        'success': True,
+        'result': {
+            'message': "Deletion scheduled.",
+        },
+    })
