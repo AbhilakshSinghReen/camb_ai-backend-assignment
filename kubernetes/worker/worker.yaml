@@ -27,13 +27,9 @@ spec:
           requests:
             cpu: 100m
             memory: 256Mi
-        env:
-        - name: REDIS_HOST
-          value: "key-value-store-redis-master"
-        - name: REDIS_PORT
-          value: "6379"
-        - name: REDIS_DB
-          value: "0"
+        envFrom:
+        - configMapRef:
+            name: key-value-store-redis-config
 ---
 apiVersion: v1
 kind: Service
