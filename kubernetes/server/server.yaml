@@ -29,7 +29,7 @@ spec:
             memory: 256Mi
         env:
         - name: REDIS_HOST
-          value: "localhost"
+          value: "redis-server-service"
         - name: REDIS_PORT
           value: "6379"
         - name: REDIS_DB
