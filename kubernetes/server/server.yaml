@@ -29,13 +29,11 @@ spec:
             memory: 256Mi
         env:
         - name: REDIS_HOST
-          value: "my-release-redis-master"
+          value: "key-value-store-redis-master"
         - name: REDIS_PORT
           value: "6379"
         - name: REDIS_DB
           value: "0"
-        - name: REDIS_PASSWORD
-          value: "zHjT2ZP6zm"
 ---
 apiVersion: v1
 kind: Service
