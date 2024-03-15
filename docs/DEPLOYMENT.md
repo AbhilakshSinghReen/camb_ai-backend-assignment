@@ -31,7 +31,7 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 
 Install the help chart. The installation uses values defined in `kubernetes/redis/redis-values.yaml`
 ```
-helm install key-value-store-redis bitnami/redis --values kubernetes/redis/redis-values.yaml -n key-value-store --set auth.enabled=false
+helm upgrade --install key-value-store-redis bitnami/redis --values kubernetes/redis/redis-values.yaml -n key-value-store --set auth.enabled=false
 ```
 
 Create the ConfigMap for Redis.
