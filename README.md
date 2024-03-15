@@ -4,8 +4,10 @@ In order to procees with deployment on your Kubernetes cluster, you need to have
 Apart from this, you should also have `kubectl` and `helm` installed.
 
 ## Get the Code
-Clone this repository <br>
-`git clone https://github.com/AbhilakshSinghReen/camb_ai-backend-assignment.git`
+Clone this repository
+```
+git clone https://github.com/AbhilakshSinghReen/camb_ai-backend-assignment.git
+```
 
 Move into the project folder
 `cd camb_ai-backend-assignment`
