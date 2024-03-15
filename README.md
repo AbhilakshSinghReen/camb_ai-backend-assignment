@@ -4,7 +4,7 @@ In order to procees with deployment on your Kubernetes cluster, you need to have
 Apart from this, you should also have `kubectl` and `helm` installed.
 
 ## Get the Code
-Clone this repository
+Clone this repository <br>
 `git clone https://github.com/AbhilakshSinghReen/camb_ai-backend-assignment.git`
 
 Move into the project folder
@@ -47,3 +47,46 @@ HorizontalPodAutoscaler (Optional)
 
 In addition, if we want the server to be accessed from outside the Cluster, we have to create an Ingress or a LoadBalancer service. For the purpose of this demo, we'll be using a LoadBalancer Service. This can be created by running the following:
 `kubectl apply -n key-value-store -f kubernetes/server/server-loadbalancer-service.yaml`
+
+### Verify Resources Creation
+Let's first get the running pods.
+`kubectl get pods -n key-value-store`
+
+The ouput should show the following three pods:
+1) At least one pod prefixed with `key-value-store-api-server`
+2) At least one pod prefixed with `key-value-store-api-worker`
+3) At least one pod prefixed with `key-value-store-redis-master`
+
+Now, let's verify the services
+`kubectl get services -n key-value-store`
+
+The output should show at least the following four services:
+1) `key-value-store-redis-master`
+2) `key-value-store-api-worker-service`
+3) `key-value-store-api-server-service`
+4) `key-value-store-api-server-loadbalancer-service`
+
+Finally, let's verify the available HPA resources.
+`kubectl get hpa -n key-value-store`
+
+The output should show at least the following two HPAs:
+1) `key-value-store-api-server`
+2) `key-value-store-api-worker`
+
+### Running Tests
+For running tests, it is required to have the server accessible from outside the Cluster. When using `minikube`, we will need to start a tunnel for our LoadBalancer service.
+`minikube tunnel`
+The output should show `Starting tunnel for service key-value-store-api-server-loadbalancer-service.`
+
+You can try visiting `http://locahost:8000` in your browser and see a page titled "CAMB.AI - Backend Assignment".
+
+Inside your local development environment, cd into the `tests` folder and install the required packages. It is recommended to use a virtual environment.
+`pip install -r requirements.txt`
+
+Next, run the API tests using:
+`python3 api_tests.py`
+
+You should get an output saying that 7 tests have passed.
+
+### Testing HPA by Load Testing
+foo
