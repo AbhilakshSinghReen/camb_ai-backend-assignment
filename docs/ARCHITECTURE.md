@@ -11,7 +11,7 @@ And we design our system with the following two requirements in mind:
 2) Auto Scaling (Horizontal)
 
 When deployment on a K8s Cluster, the system would look something like this.
-[{image here pls}]
+![System Architecture Image](./images/system-architecture.jpg)
 
 Let us take a look at the requirements and how we've implemented them.
 We start with the simpler components first: the API Server and the Huey Worker. These are relatively straightforward as they are StateLess.
@@ -29,6 +29,19 @@ For deployment in the Cloud, I would procees with K8s Ingress.
 Now, let's look at the more complicated part of the application: deploying Redis.
 Redis is an in-memory DB, but we would like to persist data on the disk so we don't lose data when a redis Pod is reschedules.
 
+For deploying Redis, I have used the Helm charts provided by Bitnami (`https://charts.bitnami.com/bitnami`) with some custom configuration.
+
+#### High Availability vs Clustering
+I have chosen to run Redis in the "High Availability" mode using Redis Sentinels.
+
+Redis Clustering would involve storing keys on different Redis nodes by sharding. However, this comes with read/write limitation. Since, I do not have any particular information about that kind of data that will be stored in the key-value store, I have gone with a High Availability setup.
+
+#### Pod Anti-affinity
+In a Cloud Deployment Environment, I would like to make sure that the Redis Sentinels don't run on the same node as the Redis Master they are tracking, as, in this case, the failure of that node will destroy the High Availability System.
+
+We can customize our deployments to specify `podAntiAffinity` relative to other pods using labels.
+
+But, since I am using Minikube, I only have one node to schedule all the pods on. :(
 
 
 ## Low-Level Design
