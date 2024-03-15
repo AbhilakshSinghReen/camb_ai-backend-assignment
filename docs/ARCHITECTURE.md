@@ -1,21 +1,21 @@
-In this document, we will first take a look at the System's architecture in a Cluster and discuss high-level design decisions. In the second part, we discuss the low-level design and how the codebase is structured.
+In this document, we will first take a look at the System's architecture in a Cluster and discuss high-level design decisions that I've made. In the second part, we discuss the low-level design and how the codebase is structured.
 
 ## High-Level Design
-Our system has 3 major components:
+The system has 3 major components:
 1) The API Server
 2) The Huey Worker
 3) The Redis DB
 
-And we design our system with the following two requirements in mind:
+And I designed the system with the following two requirements in mind:
 1) High Availability
 2) Auto Scaling (Horizontal)
 
 When deployment on a K8s Cluster, the system would look something like this.
 ![System Architecture Image](./images/system-architecture.jpg)
 
-Let us take a look at the requirements and how we've implemented them.
+Let us take a look at the requirements and how I've implemented them.
 We start with the simpler components first: the API Server and the Huey Worker. These are relatively straightforward as they are StateLess.
-We build K8s deployment and ClusterIP services for both the API Server and Huey Worker, these are defined in `kubernetes/server/server.yaml` and `kubernetes/worker/worker.yaml`. For the purpose of this demonstration, I have CPU Limits of 100 Milicores and Memory Limits of 256 Megabytes of both of these deployments.
+We have K8s deployment and ClusterIP services for both the API Server and Huey Worker, these are defined in `kubernetes/server/server.yaml` and `kubernetes/worker/worker.yaml`. For the purpose of this demonstration, I have CPU Limits of 100 Milicores and Memory Limits of 256 Megabytes of both of these deployments.
 
 #### Horizontal Autoscaling
 In order to demonstrate the HorizontalAutoScaler, I've set `targetCPUUtilizationPercentage: 25`, so that auto scaling can be observed while load testing. As a safety feature, we set `maxReplicas: 5`.
@@ -23,7 +23,7 @@ In order to demonstrate the HorizontalAutoScaler, I've set `targetCPUUtilization
 ### External Traffic
 For the purpose of this project, I was running the system on a Minikube Cluster. To allow external traffic, I've created a LoadBalancer Service and then tunnelled it using `minikube tunnel`.
 This service is defined in `kubernetes/server/server-loadbalancer-service.yaml`.
-For deployment in the Cloud, I would procees with K8s Ingress.
+For deployment in the Cloud, I would proceed with K8s Ingress.
 
 ### Redis
 Now, let's look at the more complicated part of the application: deploying Redis.

@@ -22,7 +22,7 @@ kubectl create namespace key-value-store
 ```
 
 ### Setup Redis
-For running Redis, in our cluster, we'll be using the Helm chart provided by Bitname.
+For running Redis, in our cluster, we'll be using the Helm chart provided by Bitnami.
 
 Add the Bitnami repo to Helm.
 ```
